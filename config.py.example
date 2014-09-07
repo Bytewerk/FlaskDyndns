@@ -1,0 +1,22 @@
+__author__ = 'hd'
+
+class Config(object):
+
+    nameserver = "ns.example.com"
+
+    keyring_data = {
+        'ddns-key.dyn.example.com.': 'XxXXxXxxxxxXXXxxXxXXXxXx/xxx+xxxxx/xxxxxXxX='
+    }
+
+    key_name = "ddns-key.dyn.example.com."
+
+    key_algo = "hmac-sha256"
+
+    users = {
+        "foobar": {
+            "password": "secret",
+            "domain": "dyn.example.com.",
+            "hostnames": ["test1", "test2"],
+            "ttl": 10
+        }
+    }
