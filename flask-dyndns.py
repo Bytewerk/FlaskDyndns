@@ -51,9 +51,9 @@ def update():
     dnsupdate = dns.update.Update(user_config["domain"], keyring=keyring, keyname=Config.key_name, keyalgorithm=Config.key_algo)
     dnsupdate.replace(str(hostname), 10, 'A', ip)
     response = dns.query.tcp(dnsupdate, Config.nameserver)
-    if response.status_code != 0:
-        raise Exception("dns update returned error: " + response.status_code)
-
+    error = dns.rcode.from_flags(response.flags, response.ednsflags)
+    if error != dns.rcode.NOERROR:
+        raise Exception("dns update returned error: " + str(error))
     return "ok"
 
 
