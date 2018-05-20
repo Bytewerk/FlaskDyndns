@@ -48,9 +48,12 @@ def update():
         raise Exception("invalid ip '" + myip + "' in get parameter 'myip'")
 
     keyring = dns.tsigkeyring.from_text(Config.keyring_data)
-    update = dns.update.Update(user_config["domain"], keyring=keyring, keyname=Config.key_name, keyalgorithm=Config.key_algo)
-    update.replace(str(hostname), 10, 'A', ip)
-    response = dns.query.tcp(update, Config.nameserver)
+    dnsupdate = dns.update.Update(user_config["domain"], keyring=keyring, keyname=Config.key_name, keyalgorithm=Config.key_algo)
+    dnsupdate.replace(str(hostname), 10, 'A', ip)
+    response = dns.query.tcp(dnsupdate, Config.nameserver)
+    if response.status_code != 0:
+        raise Exception("dns update returned error: " + response.status_code)
+
     return "ok"
 
 
